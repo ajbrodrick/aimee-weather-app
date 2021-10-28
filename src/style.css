@@ -83,11 +83,11 @@ body {
   left: 25px;
 }
 
-.date-dayname {
+#date-dayNameTime {
   margin: 0;
 }
 
-.date-day {
+#date-day {
   display: block;
   margin: 0;
 }
@@ -131,6 +131,9 @@ body {
 
 #weather-desc {
   margin: 0;
+}
+
+#weather-desc::first-letter {
   text-transform: capitalize;
 }
 
@@ -189,12 +192,6 @@ body {
   color: #313131;
   -webkit-box-shadow: 0 0 40px -5px rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 40px -5px rgba(0, 0, 0, 0.2);
-}
-
-.week-list > li.active {
-  background: #fff;
-  color: #313131;
-  border-radius: 10px;
 }
 
 .week-list > li .day-name {
