@@ -1,13 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,700,900&display=swap");
 
 :root {
-  --gradient: linear-gradient(135deg, #72edf2 10%, #5151e5 100%);
-}
-
-* {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  line-height: 1.25em;
+  --gradient: linear-gradient(135deg, #39e5eb 10%, #5151e5 100%);
 }
 
 .clear {
@@ -116,7 +110,7 @@ body {
 }
 
 #weather-temp {
-  margin: 0;
+  margin: auto 10px 0 -5px;
   float: left;
   font-weight: 700;
   font-size: 4em;
@@ -129,8 +123,18 @@ body {
   font-weight: 500;
 }
 
+#icon {
+  margin-left: -10px;
+  margin-bottom: -10px;
+  display: block;
+  position: relative;
+  opacity: 80%;
+}
+
 #weather-desc {
   margin: 0;
+  float: left;
+  font-size: x-large;
 }
 
 #weather-desc::first-letter {
@@ -227,14 +231,16 @@ input[type="city"] {
 
 input[type="submit"] {
   float: right;
-  margin-left: 20px;
-  padding: 2px 15px;
+  padding: 2px 20px;
   background-image: var(--gradient);
   color: #ffffff;
   border: 0 none;
   cursor: pointer;
   -webkit-border-radius: 20px;
   border-radius: 10px;
+  -webkit-box-shadow: 0 0 30px -5px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 30px -5px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
 }
 
 .location-button {
