@@ -1,4 +1,4 @@
-function formatDate(timestamp) {
+function formatDayTime(timestamp) {
   let date = new Date(timestamp);
   let hours = date.getHours();
   if (hours < 10) {
@@ -21,6 +21,29 @@ function formatDate(timestamp) {
   return `${day} ${hours}:${minutes}`;
 }
 
+function formatDate(timestamp) {
+  let date = new Date(timestamp);
+  let day = date.getDate();
+
+  let months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  let month = months[date.getMonth()];
+  let year = date.getFullYear();
+  return `${day} ${month} ${year}`;
+}
+
 function displayTemperature(response) {
   let temperature = document.querySelector("#weather-temp");
   let city = document.querySelector("#city");
@@ -30,12 +53,15 @@ function displayTemperature(response) {
   let dateNameTime = document.querySelector("#date-dayNameTime");
   let dateDay = document.querySelector("#date-day");
   let iconElement = document.querySelector("#icon");
-  temperature.innerHTML = Math.round(response.data.main.temp);
+  celsiusTemp = response.data.main.temp;
+
+  temperature.innerHTML = Math.round(celsiusTemp);
   city.innerHTML = response.data.name;
   weatherDescription.innerHTML = response.data.weather[0].description;
   humidity.innerHTML = `${response.data.main.humidity} %`;
   wind.innerHTML = `${Math.round(response.data.wind.speed)} km / h`;
-  dateNameTime.innerHTML = formatDate(response.data.dt * 1000);
+  dateNameTime.innerHTML = formatDayTime(response.data.dt * 1000);
+  dateDay.innerHTML = formatDate(response.data.dt * 1000);
   iconElement.setAttribute(
     "src",
     `http://openweathermap.org/img/wn/${response.data.weather[0].icon}.png`
@@ -56,7 +82,47 @@ function changeCity(event) {
   search(changeCityElement.value);
 }
 
-search("Sydney");
+function searchLocation(position) {
+  let apiKey = "93d43dfe3b4a950e5b187e5dc313705e";
+  let units = "metric";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=${units}&appid=${apiKey}`;
+  axios.get(apiUrl).then(displayTemperature);
+}
+
+function getCurrentLocation(event) {
+  event.preventDefault();
+  navigator.geolocation.getCurrentPosition(searchLocation);
+}
+
+function showFahrenheitTemp(event) {
+  event.preventDefault();
+  let fahrenheitValue = Math.round((celsiusTemp * 9) / 5 + 32);
+  celsius.classList.remove("unit-active");
+  fahrenheit.classList.add("unit-active");
+  let temperature = document.querySelector("#weather-temp");
+  temperature.innerHTML = fahrenheitValue;
+}
+
+function showCelsiusTemp(event) {
+  event.preventDefault();
+  let temperature = document.querySelector("#weather-temp");
+  celsius.classList.add("unit-active");
+  fahrenheit.classList.remove("unit-active");
+  temperature.innerHTML = Math.round(celsiusTemp);
+}
+
+let celsiusTemp = null;
 
 let form = document.querySelector("#select-city");
 form.addEventListener("submit", changeCity);
+
+let currentLocationButton = document.querySelector("#location-button");
+currentLocationButton.addEventListener("click", getCurrentLocation);
+
+let fahrenheit = document.querySelector("#fahrenheit");
+fahrenheit.addEventListener("click", showFahrenheitTemp);
+
+let celsius = document.querySelector("#celsius");
+celsius.addEventListener("click", showCelsiusTemp);
+
+search("Sydney");

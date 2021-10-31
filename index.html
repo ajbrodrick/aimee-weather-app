@@ -20,13 +20,16 @@
         <div class="weather-gradient"></div>
         <div class="date-container">
           <h2 id="city"></h2>
-          <p id="date-day"></p>
           <p id="date-dayNameTime"></p>
+          <p id="date-day"></p>
         </div>
         <div class="weather-container">
           <img src="" alt="" id="icon" />
           <h1 id="weather-temp"></h1>
-          <span id="units">°C | °F</span>
+          <span id="units"
+            ><a href id="celsius" class="unit-active">°C</a> |
+            <a href id="fahrenheit">°F</a></span
+          >
           <div>
             <h3 id="weather-desc"></h3>
           </div>
@@ -87,8 +90,8 @@
             />
             <input type="submit" value="Change city" />
           </form>
-          <button class="location-button">
-            <i data-feather="map-pin"></i><span>Current location</span>
+          <button id="location-button">
+            <span>Current location</span>
           </button>
         </div>
         <div id="byline">
