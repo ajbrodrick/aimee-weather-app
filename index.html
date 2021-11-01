@@ -26,10 +26,7 @@
         <div class="weather-container">
           <img src="" alt="" id="icon" />
           <h1 id="weather-temp"></h1>
-          <span id="units"
-            ><a href id="celsius" class="unit-active">°C</a> |
-            <a href id="fahrenheit">°F</a></span
-          >
+          <span id="units">°C</span>
           <div>
             <h3 id="weather-desc"></h3>
           </div>
@@ -50,31 +47,7 @@
             </div>
           </div>
         </div>
-        <div class="week-container">
-          <ul class="week-list">
-            <li class="active">
-              <span class="day-name">Tue</span
-              ><span class="day-temp">29°C</span>
-            </li>
-            <li>
-              <span class="day-name">Wed</span
-              ><span class="day-temp">21°C</span>
-            </li>
-            <li>
-              <span class="day-name">Thu</span
-              ><span class="day-temp">18°C</span>
-            </li>
-            <li>
-              <span class="day-name">Fri</span
-              ><span class="day-temp">19°C</span>
-            </li>
-            <li>
-              <span class="day-name">Sat</span
-              ><span class="day-temp">19°C</span>
-            </li>
-            <div class="clear"></div>
-          </ul>
-        </div>
+        <div class="week-container" id="forecast"></div>
         <div class="location-container">
           <form id="select-city">
             <input

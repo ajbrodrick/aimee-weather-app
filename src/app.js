@@ -44,6 +44,49 @@ function formatDate(timestamp) {
   return `${day} ${month} ${year}`;
 }
 
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"];
+  return days[day];
+}
+
+function displayForecast(response) {
+  let forecast = response.data.daily;
+  let forecastElement = document.querySelector("#forecast");
+
+  let forecastHTML = `<ul class="week-list">`;
+  forecast.forEach(function (forecastDay, index) {
+    if (index < 5) {
+      forecastHTML =
+        forecastHTML +
+        `
+             <li>
+              <img class="forecastIcon"
+                src="http://openweathermap.org/img/wn/${
+                  forecastDay.weather[0].icon
+                }@2x.png"
+                alt="${forecastDay.weather.description}"
+                              />
+              <span class="day-name">${formatDay(forecastDay.dt)}</span
+              ><span class="day-temp">${Math.round(
+                forecastDay.temp.max
+              )}°C</span>
+            </li>
+                                `;
+    }
+  });
+  forecastHTML = forecastHTML + '<div class="clear"></div></ul>';
+  forecastElement.innerHTML = forecastHTML;
+}
+
+function getForecast(coordinates) {
+  let apiKey = "93d43dfe3b4a950e5b187e5dc313705e";
+  let units = "metric";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&units=${units}&appid=${apiKey}`;
+  axios.get(apiUrl).then(displayForecast);
+}
+
 function displayTemperature(response) {
   let temperature = document.querySelector("#weather-temp");
   let city = document.querySelector("#city");
@@ -53,9 +96,8 @@ function displayTemperature(response) {
   let dateNameTime = document.querySelector("#date-dayNameTime");
   let dateDay = document.querySelector("#date-day");
   let iconElement = document.querySelector("#icon");
-  celsiusTemp = response.data.main.temp;
 
-  temperature.innerHTML = Math.round(celsiusTemp);
+  temperature.innerHTML = Math.round(response.data.main.temp);
   city.innerHTML = response.data.name;
   weatherDescription.innerHTML = response.data.weather[0].description;
   humidity.innerHTML = `${response.data.main.humidity} %`;
@@ -67,6 +109,8 @@ function displayTemperature(response) {
     `http://openweathermap.org/img/wn/${response.data.weather[0].icon}.png`
   );
   iconElement.setAttribute("alt", response.data.weather[0].description);
+
+  getForecast(response.data.coord);
 }
 
 function search(city) {
@@ -80,6 +124,7 @@ function changeCity(event) {
   event.preventDefault();
   let changeCityElement = document.querySelector("#city-search");
   search(changeCityElement.value);
+  form.reset();
 }
 
 function searchLocation(position) {
@@ -94,35 +139,10 @@ function getCurrentLocation(event) {
   navigator.geolocation.getCurrentPosition(searchLocation);
 }
 
-function showFahrenheitTemp(event) {
-  event.preventDefault();
-  let fahrenheitValue = Math.round((celsiusTemp * 9) / 5 + 32);
-  celsius.classList.remove("unit-active");
-  fahrenheit.classList.add("unit-active");
-  let temperature = document.querySelector("#weather-temp");
-  temperature.innerHTML = fahrenheitValue;
-}
-
-function showCelsiusTemp(event) {
-  event.preventDefault();
-  let temperature = document.querySelector("#weather-temp");
-  celsius.classList.add("unit-active");
-  fahrenheit.classList.remove("unit-active");
-  temperature.innerHTML = Math.round(celsiusTemp);
-}
-
-let celsiusTemp = null;
-
 let form = document.querySelector("#select-city");
 form.addEventListener("submit", changeCity);
 
 let currentLocationButton = document.querySelector("#location-button");
 currentLocationButton.addEventListener("click", getCurrentLocation);
-
-let fahrenheit = document.querySelector("#fahrenheit");
-fahrenheit.addEventListener("click", showFahrenheitTemp);
-
-let celsius = document.querySelector("#celsius");
-celsius.addEventListener("click", showCelsiusTemp);
 
 search("Sydney");
